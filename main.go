@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -28,7 +27,7 @@ func _main() int {
 		} else {
 			file, err := os.Open(name)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Failed to open file: %s\n", name)
+				fmt.Fprintf(os.Stderr, "Failed to open file: %s: %v\n", name, err)
 				return 1
 			}
 			defer file.Close()
@@ -38,7 +37,7 @@ func _main() int {
 	}
 
 	if offset > 0 {
-		_, err := io.CopyN(ioutil.Discard, r, offset)
+		_, err := io.CopyN(io.Discard, r, offset)
 		if err != nil {
 			if err == io.EOF {
 				return 0
